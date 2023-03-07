@@ -24,19 +24,10 @@ export default function Toast() {
     console.log(toasts);
   };
 
-  // const SingleToast = () => {
-  //   return (
-  //     <div>
-  //       <div>
-  //         <span>icon</span>
-  //         <span>title</span>
-  //       </div>
-  //       <div>
-  //         <button className={styles.close}>x</button>
-  //       </div>
-  //     </div>
-  //   );
-  // };
+  const onClose = (id) => {
+    const updatedToasts = toasts.filter((toast) => toast.id !== id);
+    setToasts(updatedToasts);
+  };
 
   return (
     <div className={styles.container}>
@@ -82,24 +73,51 @@ export default function Toast() {
           title={toast.title}
           icon={toast.icon}
           position={toast.position}
-          idx={idx}
+          index={idx}
           id={toast.id}
+          onClose={onClose}
         />
       ))}
     </div>
   );
 }
 
-const SingleToast = ({ title, position, icon, idx, id }) => {
+const SingleToast = ({ title, position, icon, index, id, onClose }) => {
+  const cn = (...classes: any[]) => classes.join(' ');
+  const getPositionStyle = () => {
+    let pos = positionOptions.find((el) => el.value === position);
+
+    return {
+      ...pos?.style,
+      marginTop: pos.view === 'top' ? index * 60 + 'px' : '',
+      marginBottom: pos.view === 'bottom' ? index * 60 + 'px' : '',
+    };
+  };
+
   return (
     <React.Fragment>
-      <div>
-        <div>
+      <div className={styles.toastContainer} style={getPositionStyle()}>
+        <div className={styles.iconContentContainer}>
           <span>{icon}</span>
           <span>{title}</span>
         </div>
         <div>
-          <button className={styles.close}>x</button>
+          <button className={styles.close} onClick={() => onClose(id)}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={styles.closeIcon}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </button>
         </div>
       </div>
     </React.Fragment>
