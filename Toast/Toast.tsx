@@ -48,8 +48,10 @@ export default function Toast() {
             value={position}
             onChange={(e) => setPosition(e.target.value)}
           >
-            {positionOptions.map((option) => (
-              <option>{option.name}</option>
+            {positionOptions.map((option, idx) => (
+              <option key={`oposition-option-${idx}`} value={option.value}>
+                {option.name}
+              </option>
             ))}
           </select>
 
@@ -59,8 +61,10 @@ export default function Toast() {
             value={icon}
             onChange={(e) => setIcon(e.target.value)}
           >
-            {iconOptions.map((icon) => (
-              <option>{icon.value}</option>
+            {iconOptions.map((icon, idx) => (
+              <option key={`icon-option-${idx}`} value={icon.value}>
+                {icon.value}
+              </option>
             ))}
           </select>
         </div>
@@ -86,6 +90,7 @@ const SingleToast = ({ title, position, icon, index, id, onClose }) => {
   const cn = (...classes: any[]) => classes.join(' ');
   const getPositionStyle = () => {
     let pos = positionOptions.find((el) => el.value === position);
+    console.log(position);
 
     return {
       ...pos?.style,
